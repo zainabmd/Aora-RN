@@ -4,6 +4,7 @@ import {Link} from 'expo-router';
 import {images} from '../../constants';
 import FormField from '../../components/FormField';
 import CustomButton from '../../components/CustomButton'
+import {createUser} from '../../lib/appwrite'
 import { useState } from 'react';
 
 const SignUp = () => {
@@ -14,7 +15,7 @@ const SignUp = () => {
   });
   const [isSubmitting,setIsSubmitting]=useState(false);
   const submit=()=>{
-
+    createUser()
   }
   return (
     <SafeAreaView className="bg-primary h-full">
@@ -35,9 +36,7 @@ const SignUp = () => {
           <FormField 
             title="Email"
             value={form.email}
-            handleChange={(e)=>{
-              setForm({...form,email:e})
-            }}
+            handleChange={(e)=> setForm({...form,email:e})}
             otherStyles="mt-7"
             keyboardType="email-address"
           />
@@ -45,9 +44,8 @@ const SignUp = () => {
           <FormField 
             title="Password"
             value={form.password}
-            handleChange={(e)=>{
-              setForm({...form,password:e})
-            }}
+            handleChange={(e)=>
+              setForm({...form,password:e})}
             otherStyles="mt-7"
           />
 
