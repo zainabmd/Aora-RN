@@ -4,6 +4,7 @@ import {Link} from 'expo-router';
 import {images} from '../../constants';
 import FormField from '../../components/FormField';
 import CustomButton from '../../components/CustomButton'
+import signIn from '../../lib/appwrite'
 import { useState } from 'react';
 
 const SignIn = () => {
@@ -12,8 +13,21 @@ const SignIn = () => {
     password:''
   });
   const [isSubmitting,setIsSubmitting]=useState(false);
-  const submit=()=>{
 
+  const submit= async () => {
+    if(!form.username || !form.email || !form.password) {
+      Alert.alert('Error','Please fill in all the fields')
+    } setIsSubmitting(true)
+    try{
+      await signIn(form.email,form.password,form.username)
+      //later: set it to global state using context
+      router.replace('/home')
+    }
+    catch(error){
+      Alert.alert('Error',error.message)
+    } finally{
+      setIsSubmitting(false);
+    }
   }
   return (
     <SafeAreaView className="bg-primary h-full">
@@ -34,6 +48,7 @@ const SignIn = () => {
           <FormField 
             title="Password"
             value={form.password}
+            defaultValue="abc"
             handleChange={(e)=>{
               setForm({...form,password:e})
             }}
