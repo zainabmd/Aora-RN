@@ -4,8 +4,8 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { View, Text, ScrollView, Dimensions, Alert, Image } from "react-native";
 
 import { images } from "../../constants";
-import  CustomButton from "../../components/CustomButton";
-import FormField from "../../components/FormField";
+import CustomButton from "../../components/CustomButton";
+import FormField from '../../components/FormField'
 import { getCurrentUser, signIn } from "../../lib/appwrite";
 import { useGlobalContext } from "../../context/GlobalProvider";
 
@@ -88,7 +88,7 @@ const SignIn = () => {
               href="/sign-up"
               className="text-lg font-psemibold text-secondary"
             >
-              Signup
+              Sign Up
             </Link>
           </View>
         </View>
