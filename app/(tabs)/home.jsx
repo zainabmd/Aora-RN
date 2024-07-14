@@ -1,16 +1,26 @@
-import { View, Text, FlatList, Image } from 'react-native'
-import React from 'react'
+import { View, Text, FlatList, Image, RefreshControl, Alert } from 'react-native'
+import{ useEffect, useState} from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import {images} from '../../constants';
 import SearchInput from '../../components/SearchInput';
 import Trending from '../../components/Trending';
 import EmptyState from '../../components/EmptyState';
+import { getAllPosts } from '../../lib/appwrite';
+import useAppwrite from '../../lib/useAppwrite'
 const Home = () => {
+  const {data:posts}=useAppwrite(getAllPosts);
+console.log(posts)
+  const [refreshing, setRefreshing] = useState(false);
+  const onRefresh = async () => {
+    setRefreshing(true);
+    //recall posts videos..
+    setRefreshing(false);
+  }
   return (
-    <SafeAreaView className="bg-primary">
+    <SafeAreaView className="bg-primary h-full">
       <FlatList
-        data={[  ]}
-        // data={[ { id:1}, { id:2}, { id:3} ]}
+        
+        data={[ { id:1}, { id:2}, { id:3} ]}
         keyExtractor={(item)=>item.id}
         renderItem={({item})=>(
           <Text className="text-3xl text-white">{item.id}</Text>
@@ -45,6 +55,12 @@ const Home = () => {
             subtitle="Be the first one to upload a video."
           />
         )}
+
+        refreshControl=
+        {<RefreshControl
+          refreshing={refreshing}
+          onRefresh={onRefresh}
+        />}
 
       />
     </SafeAreaView>
