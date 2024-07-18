@@ -1,8 +1,7 @@
 import { View, Text ,Image, TouchableOpacity} from 'react-native'
+import { ResizeMode, Video } from "expo-av";
 import React, { useState } from 'react'
 import { icons } from '../constants'
-import { Touchable } from 'react-native-web';
-
 
 const VideoCard = ({video:{title,thumbnail,video,creator:{username,avatar}}}) => {
     const[play,setPlay]=useState(false);
@@ -12,7 +11,7 @@ const VideoCard = ({video:{title,thumbnail,video,creator:{username,avatar}}}) =>
         <View className="justify-center items-center flex-row flex-1">
             <View className="w-[46px] h-[46px] rounded-lg border
             border-secondary justify-center items-center p-0.5">
-                <Image source={{uri: avatar}} className="w-full h-full rounded-lg"/>
+                <Image source={{uri: avatar}} className="w-full h-full rounded-lg" resizeMode='cover'/>
             </View>
 
             <View className="justify-center flex-1 ml-3 gap-y-1">
@@ -25,7 +24,21 @@ const VideoCard = ({video:{title,thumbnail,video,creator:{username,avatar}}}) =>
             <Image source={icons.menu} className="w-5 h-5" resizeMode='contain'/>
         </View>
     </View>
-        {play? (<Text className="text-white">Playing</Text>) : 
+        { play ? (
+            <Video
+          source={{ uri: video}}
+          className="w-full h-60 rounded-xl mt-3 bg-white/10"
+          resizeMode={ResizeMode.CONTAIN}
+          useNativeControls
+          shouldPlay
+          onPlaybackStatusUpdate={(status)=>{
+            if(status.didJustFinish){
+            setPlay(false)
+          }
+          }}
+        />
+        )
+         : 
         (<TouchableOpacity 
             activeOpacity={0.7}
             onPress={()=>setPlay(true)}

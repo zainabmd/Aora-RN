@@ -1,20 +1,20 @@
-import { View, Text, FlatList, Image, RefreshControl, Alert } from 'react-native'
-import{ useEffect, useState} from 'react'
-import { SafeAreaView } from 'react-native-safe-area-context'
-import {images} from '../../constants';
+import { View, Text, FlatList, Image, RefreshControl } from 'react-native';
+import { useEffect, useState } from 'react';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { images } from '../../constants';
+import { getAllPosts} from '../../lib/appwrite';
+import {getLatestPosts} from '../../lib/appwrite';
+import useAppwrite from '../../lib/useAppwrite';
 import SearchInput from '../../components/SearchInput';
 import Trending from '../../components/Trending';
 import EmptyState from '../../components/EmptyState';
 import VideoCard from '../../components/VideoCard';
-import { getAllPosts, getLatestPosts } from '../../lib/appwrite';
-import useAppwrite from '../../lib/useAppwrite'
-
 
 const Home = () => {
   
   const {data:posts,refetch}=useAppwrite(getAllPosts);
   const {data:latestPosts}=useAppwrite(getLatestPosts);
-
+  console.log('Latest posts:', latestPosts);
   const [refreshing, setRefreshing] = useState(false);
   const onRefresh = async () => {
     setRefreshing(true);
@@ -23,10 +23,9 @@ const Home = () => {
   }
   return (
     <SafeAreaView className="bg-primary h-full">
-      <FlatList
-        
+      <FlatList        
         data={posts}
-        keyExtractor={(item)=>item.id}
+        keyExtractor={(item)=>item.$id}
         renderItem={({item})=>(
           <VideoCard video={item}/>
         )}
@@ -49,7 +48,7 @@ const Home = () => {
             <SearchInput />
             <View className="w-full flex-1 pt-5 pb-8">
               <Text className="text-gray-100 text-lg font-pregular mb-3">Latest Videos</Text>
-              <Trending posts= {{latestPosts} ?? [] }/>
+              <Trending posts= {latestPosts ?? [] }/>
             </View>
           </View>
         )}
