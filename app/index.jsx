@@ -4,17 +4,17 @@ import { View, Text, Image, ScrollView } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import { images } from "../constants";
-import CustomButton  from "../components/CustomButton";
-import {useGlobalContext} from "../context/GlobalProvider";
+import { CustomButton, Loader } from "../components";
+import { useGlobalContext } from "../context/GlobalProvider";
 
-const index = () => {
-  const { isLoading, isLogged } = useGlobalContext();
+const Welcome = () => {
+  const { loading, isLogged } = useGlobalContext();
 
-  if (!isLoading && isLogged) return <Redirect href="/home" />;
+  if (!loading && isLogged) return <Redirect href="/home" />;
 
   return (
     <SafeAreaView className="bg-primary h-full">
-      {/* <Loader isLoading={loading} /> */}
+      <Loader isLoading={loading} />
 
       <ScrollView
         contentContainerStyle={{
@@ -66,4 +66,4 @@ const index = () => {
   );
 };
 
-export default index;
+export default Welcome;
